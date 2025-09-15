@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>BidWise Photo Gallery</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+
+				<!-- Intro -->
+					<div id="intro">
+						<h1>Gaetano Panzer Portfolio</h1>
+						<p>Full-stack developer with practical experience crafting responsive, user-focused web applications—building intuitive frontends and robust backends with equal care. Proficient in JavaScript, React, Node.js, and SQL, with a strong grasp of RESTful APIs and modern development practices @<a href="https://www.linkedin.com/in/gaetano-panzer-17588419a" target="_blank">Gaetano</a></p>
+						<ul class="actions">
+							<li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+						</ul>
+					</div>
+
+				<!-- Header -->
+					<header id="header">
+						<a href="https://github.com/mrpanzerr" target="_blank" class="logo">My GitHub</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li class="active"><a href="index.html">BidWise</a></li>
+						</ul>
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/gaetano-panzer-17588419a" target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://www.github.com/mrpanzerr" target="_blank" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<section id="gallery">
+							<h2>Photo Gallery</h2>
+							<div class="gallery-grid">
+								<div class="gallery-item"><img src="images/bidwise-login.png" alt="bidwise login screen"></div>
+								<div class="gallery-item"><img src="images/dashboard.png" alt="bidwise dashboard"></div>
+								<div class="gallery-item"><img src="images/project-dashboard.png" alt="bidwise project dashboard"></div>
+								<div class="gallery-item"><img src="images/sqft-calculator-1.png" alt="bidwise measurement calculator"></div>
+								<div class="gallery-item"><img src="images/sqft-calculator-2.png" alt="bidwise measurement calculator continued"></div>
+							</div>
+						</section>
+						
+						<!-- Lightbox Overlay -->
+						<div id="lightbox" class="hidden">
+							<span class="close">&times;</span>
+							<img class="lightbox-img" src="" alt="Expanded Photo">
+						</div>
+					</div>
+			</div>
+			
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script>
+			const lightbox = document.getElementById('lightbox');
+			const lightboxImg = document.querySelector('.lightbox-img');
+			const closeBtn = document.querySelector('#lightbox .close');
+
+			document.querySelectorAll('.gallery-item img').forEach(img => {
+				img.addEventListener('click', () => {
+					lightbox.classList.remove('hidden');
+					lightboxImg.src = img.src;
+					lightboxImg.alt = img.alt;
+				});
+			});
+
+			closeBtn.addEventListener('click', () => {
+				lightbox.classList.add('hidden');
+				lightboxImg.src = '';
+			});
+
+			lightbox.addEventListener('click', (e) => {
+				if (e.target === lightbox) {
+					lightbox.classList.add('hidden');
+					lightboxImg.src = '';
+				}
+			});
+			</script>			
+	</body>
+</html>
