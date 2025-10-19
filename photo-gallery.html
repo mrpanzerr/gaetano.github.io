@@ -5,7 +5,6 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
 
@@ -29,7 +28,8 @@
 				<!-- Nav -->
 					<nav id="nav">
 						<ul class="links">
-							<li class="active"><a href="index.html">BidWise</a></li>
+							<li class="active"><a href="photo-gallery.html">BidWise</a></li>
+							<li class="active"><a href="index.html">Home</a></li>
 						</ul>
 						<ul class="icons">
 							<li><a href="https://www.linkedin.com/in/gaetano-panzer-17588419a" target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
@@ -41,13 +41,7 @@
 					<div id="main">
 						<section id="gallery">
 							<h2>Photo Gallery</h2>
-							<div class="gallery-grid">
-								<div class="gallery-item"><img src="images/bidwise-login.png" alt="bidwise login screen"></div>
-								<div class="gallery-item"><img src="images/dashboard.png" alt="bidwise dashboard"></div>
-								<div class="gallery-item"><img src="images/project-dashboard.png" alt="bidwise project dashboard"></div>
-								<div class="gallery-item"><img src="images/sqft-calculator-1.png" alt="bidwise measurement calculator"></div>
-								<div class="gallery-item"><img src="images/sqft-calculator-2.png" alt="bidwise measurement calculator continued"></div>
-							</div>
+							<div class="gallery-grid" id="gallery-grid"></div>
 						</section>
 						
 						<!-- Lightbox Overlay -->
@@ -66,29 +60,103 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+
 			<script>
+			const images = [
+				// Website images
+				{ src: "images/BidWise/login.png", alt: "Login Screen" },
+				{ src: "images/BidWise/dashboard-m2.png", alt: "Dashboard" },
+				{ src: "images/BidWise/project-dashboard-m2.png", alt: "Project Dashboard" },
+				{ src: "images/BidWise/material-calculator-1-of-2.png", alt: "Material Calculator (1/2)" },
+				{ src: "images/BidWise/material-calculator-2-of-2.png", alt: "Material Calculator (2/2)" },
+				{ src: "images/BidWise/labor-calculator.png", alt: "Labor Calculator" },
+				{ src: "images/BidWise/product-edit-page.png", alt: "Product Edit Page" },
+				{ src: "images/BidWise/product-edit-page-with-search.png", alt: "Product Edit Page (with Search)" },
+				{ src: "images/BidWise/project-totals-page.png", alt: "Project Totals Page" },
+				
+				// Export file images
+				{ src: "images/BidWise/project-total-pdf.png", alt: "Project Totals PDF" },
+				{ src: "images/BidWise/project-total-xlsx.png", alt: "Project Totals XLSX" },
+				{ src: "images/BidWise/material-list-pdf.png", alt: "Project Totals PDF" },
+				{ src: "images/BidWise/material-list-xlsx.png", alt: "Project Totals XLSX" },
+				{ src: "images/BidWise/labor-list-pdf.png", alt: "Project Totals PDF" },
+				{ src: "images/BidWise/labor-list-xlsx.png", alt: "Project Totals XLSX" },
+			];
+
+			const galleryGrid = document.getElementById("gallery-grid");
+
+			// Generate gallery
+			images.forEach((image, index) => {
+			  const div = document.createElement("div");
+			  div.classList.add("gallery-item");
+			  
+			  const img = document.createElement("img");
+			  img.src = image.src;
+			  img.alt = image.alt;
+			  img.dataset.index = index;
+			  
+			  div.appendChild(img);
+			  galleryGrid.appendChild(div);
+			});
+
+			// Lightbox elements
 			const lightbox = document.getElementById('lightbox');
 			const lightboxImg = document.querySelector('.lightbox-img');
 			const closeBtn = document.querySelector('#lightbox .close');
 
-			document.querySelectorAll('.gallery-item img').forEach(img => {
-				img.addEventListener('click', () => {
-					lightbox.classList.remove('hidden');
-					lightboxImg.src = img.src;
-					lightboxImg.alt = img.alt;
-				});
+			// Create navigation buttons
+			const prevBtn = document.createElement('span');
+			const nextBtn = document.createElement('span');
+			prevBtn.classList.add('nav-btn', 'prev');
+			nextBtn.classList.add('nav-btn', 'next');
+			prevBtn.textContent = '‹';
+			nextBtn.textContent = '›';
+			lightbox.appendChild(prevBtn);
+			lightbox.appendChild(nextBtn);
+
+			let currentIndex = 0;
+
+			// Open image
+			function openLightbox(index) {
+			  currentIndex = index;
+			  const image = images[currentIndex];
+			  lightboxImg.src = image.src;
+			  lightboxImg.alt = image.alt;
+			  lightbox.classList.remove('hidden');
+			}
+
+			// Navigation
+			function showNext() {
+			  currentIndex = (currentIndex + 1) % images.length;
+			  openLightbox(currentIndex);
+			}
+
+			function showPrev() {
+			  currentIndex = (currentIndex - 1 + images.length) % images.length;
+			  openLightbox(currentIndex);
+			}
+
+			// Event listeners
+			galleryGrid.addEventListener('click', (e) => {
+			  if (e.target.tagName === 'IMG') {
+				openLightbox(parseInt(e.target.dataset.index));
+			  }
 			});
 
-			closeBtn.addEventListener('click', () => {
-				lightbox.classList.add('hidden');
-				lightboxImg.src = '';
-			});
+			closeBtn.addEventListener('click', () => lightbox.classList.add('hidden'));
+			prevBtn.addEventListener('click', showPrev);
+			nextBtn.addEventListener('click', showNext);
 
 			lightbox.addEventListener('click', (e) => {
-				if (e.target === lightbox) {
-					lightbox.classList.add('hidden');
-					lightboxImg.src = '';
-				}
+			  if (e.target === lightbox) lightbox.classList.add('hidden');
+			});
+
+			// Keyboard navigation
+			document.addEventListener('keydown', (e) => {
+			  if (lightbox.classList.contains('hidden')) return;
+			  if (e.key === 'ArrowRight') showNext();
+			  if (e.key === 'ArrowLeft') showPrev();
+			  if (e.key === 'Escape') lightbox.classList.add('hidden');
 			});
 			</script>			
 	</body>
